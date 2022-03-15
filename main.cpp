@@ -6,7 +6,7 @@
 *
 */
 
-#include "heatPDE.cpp"  
+#include "heatPDE_sec.cpp"  
 #include <chrono>
 #include <iostream>
 #include <iomanip>
