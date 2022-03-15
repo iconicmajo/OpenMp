@@ -4,27 +4,23 @@
 
 void Heat(int intervals);
 
-bool stopCondition(double new_value, double old_value){
-    return (abs(new_value-old_value) < 1e-240);
+double T0(int j, double Tr,double Tl, int N){
+    return (Tl-Tr)/(j*N);
 }
-    
-int main(int argc, char* argv[]) {
-    int thread_count = strtol(argv[1], NULL, 10);
-    Heat(thread_count);
-    return 0; 
+
+bool stopCondition(double i){
+    return (i>100000);
 }
 
 void Heat(int intervals) {
-
     //Frontier conditions
-    double Tl = 20.0;
-    double T0 = 1e-2;
+    double Tl = 0.0;
     double Tr = 60.0;
 
     //Discrete Intervals
-    double C=0.1;
+    double C=0.4;
     int x_intervals = intervals;
-    int t_intervals = int((pow(x_intervals, 2) * 1e-5)/C);
+    int t_intervals = int((pow(x_intervals, 2) * 6e-3)/C);
     DynamicMatrix solution = DynamicMatrix();
     solution.columns = t_intervals;
     solution.rows = x_intervals;
@@ -52,16 +48,16 @@ void Heat(int intervals) {
                 T_J1i =  solution.get(j+1,i);
                 T_j1i = solution.get(j-1,i);
             } else {
-                T_ji = T0 ;
-                T_J1i = j-1==0 ? Tl : T0;
-                T_j1i = j+1==x_intervals-1 ? Tr : T0;
-                solution.set(j , i, T0);
+                T_ji = T0(j, Tl, Tr, x_intervals);
+                T_J1i = T0(j+1, Tl, Tr, x_intervals);
+                T_j1i = T0(j-1, Tl, Tr, x_intervals);
+                solution.set(j , i, T0(j, Tl, Tr, x_intervals));
             }
 
             double new_value = T_ji + C*(T_j1i - 2*T_ji + T_J1i);
-            printf("i: %d, j:%d\n", i, j);
+            //printf("i: %d\n", i);//, j:%d, value:%f\n", i, j, new_value);
             if(i!=0 && j-1!=0 && j+1!=x_intervals-1){
-                if(stopCondition(new_value, solution.get(j, i-1))){
+                if(stopCondition(i)){
                     done = true;
                 }
             }
