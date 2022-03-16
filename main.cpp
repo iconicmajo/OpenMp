@@ -32,7 +32,7 @@ int main(int argc, char const *argv[])
 {
     try {
         THREAD_COUNT_PARALLEL = strtol(argv[1], NULL, 10);
-        Tr = strtol(argv[2], NULL, 10);
+        Tl = strtol(argv[2], NULL, 10);
         Tr = strtol(argv[3], NULL, 10);
     } catch (const std::exception&) {
         std::cout << "Hay algo mal el las entradas, se usaran los valores default" << std::endl;
