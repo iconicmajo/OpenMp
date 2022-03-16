@@ -11,7 +11,7 @@ double _T0(int j, double Tr,double Tl, int N){
 }
 
 bool _stopCondition(double i){
-    return (i>100000);
+    return (i<100000);
 }
 
 void _iteration(int i, DynamicMatrix solution,double Tl,double Tr, int x_intervals,double C){
@@ -43,27 +43,16 @@ void _iteration(int i, DynamicMatrix solution,double Tl,double Tr, int x_interva
 
                 double new_value = T_ji + C*(T_j1i - 2*T_ji + T_J1i);
                 //printf("i: %d\n", i);//, j:%d, value:%f\n", i, j, new_value);
-                if(i!=0 && j-1!=0 && j+1!=x_intervals-1){
-                    if(stopCondition(i)){
-                        continue;
-                    } else {
-                        _iteration(i+1, solution, Tl, Tr, x_intervals, C);
-                    }
-                }
                 solution.set(j , i+1, new_value);
+        }
+        if(stopCondition(i)){
+            _iteration(i+1, solution, Tl, Tr, x_intervals, C);
         }
     }
 }
 
-void _Heat(int intervals) {
-    //Frontier conditions
-    double Tl = 0.0;
-    double Tr = 60.0;
-
+void _Heat(int intervals, double Tl, double Tr, double C, int x_intervals, int t_intervals) {
     //Discrete Intervals
-    double C=0.4;
-    int x_intervals = intervals;
-    int t_intervals = int((pow(x_intervals, 2) * 6e-3)/C);
     DynamicMatrix solution = DynamicMatrix();
     solution.columns = t_intervals;
     solution.rows = x_intervals;

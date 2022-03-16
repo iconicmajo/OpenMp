@@ -12,15 +12,7 @@ bool stopCondition(double i){
     return (i>100000);
 }
 
-void Heat(int intervals) {
-    //Frontier conditions
-    double Tl = 0.0;
-    double Tr = 60.0;
-
-    //Discrete Intervals
-    double C=0.4;
-    int x_intervals = intervals;
-    int t_intervals = int((pow(x_intervals, 2) * 6e-3)/C);
+void Heat(int intervals, double Tl, double Tr, double C, int x_intervals, int t_intervals) {
     DynamicMatrix solution = DynamicMatrix();
     solution.columns = t_intervals;
     solution.rows = x_intervals;
