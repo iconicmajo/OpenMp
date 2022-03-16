@@ -7,6 +7,7 @@
 */
 
 #include "heatPDE_sec.cpp"  
+#include "heatPDE_para.cpp"  
 #include <chrono>
 #include <iostream>
 #include <iomanip>
@@ -15,17 +16,24 @@ using namespace std::chrono;
 int THREAD_COUNT_PARALLEL = 5000;
 
 void parallel_function(int THREAD_COUNT){
+    _Heat(THREAD_COUNT);
+}
+
+void sec_function(int THREAD_COUNT){
+    //The thread count is just used to set the 
+    //number of intervals in the space dimension
     Heat(THREAD_COUNT);
 }
 
+
 int main(int argc, char const *argv[])
 {
-    std::cout<<"Comenzando" << std::endl;
+    std::cout<<"Comenzando ejecución secuencial" << std::endl;
     auto initial_seq_time = high_resolution_clock::now();
-    parallel_function(THREAD_COUNT_PARALLEL);
+    sec_function(THREAD_COUNT_PARALLEL);
     auto final_seq_time = high_resolution_clock::now();
 
-    std::cout<<"Termino el primero" << std::endl;
+    std::cout<<"Comenzando ejecución Paralela" << std::endl;
     auto initial_parallel_time = high_resolution_clock::now();
     parallel_function(THREAD_COUNT_PARALLEL);
     auto final_parallel_time = high_resolution_clock::now();
